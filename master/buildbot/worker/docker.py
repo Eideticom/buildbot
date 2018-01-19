@@ -20,6 +20,7 @@ from __future__ import print_function
 import hashlib
 import json
 import socket
+import os
 from io import BytesIO
 
 from twisted.internet import defer
@@ -237,8 +238,15 @@ class DockerLatentWorker(DockerBaseWorker):
         if (not found) and (dockerfile is not None):
             log.msg("Image '%s' not found, building it from scratch" %
                     image)
-            for line in docker_client.build(fileobj=BytesIO(dockerfile.encode('utf-8')),
-                                            tag=image):
+            if (os.path.isfile(dockerfile)):
+                with open(dockerfile, 'rb') as fin:
+                    lines = docker_client.build(fileobj=fin, custom_context=True,
+                                                encoding='gzip', tag=image)
+            else:
+                lines = docker_client.build(fileobj=BytesIO(dockerfile.encode('utf-8')),
+                                            tag=image)
+
+            for line in lines:
                 for streamline in _handle_stream_line(line):
                     log.msg(streamline)
 
