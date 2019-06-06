@@ -11,7 +11,7 @@ Clone new buildbot code onto target machine.
 If the new buildbot matches the version of the buildbot/buildbot repo
 Git fetch (buildbot/buildbot repo) --tags
 Otherwise add a tag of the format .. git tag v3.0.0 	(v then 3 numbers separated by a decimal)
-This number must be larer than all other tags for it to be the output of buildbot --version
+This number must be larger than all other tags for it to be the output of buildbot --version
 
 This step isn't necessary, but if there are errors it might help
 	sudo /opt/anaconda3/bin/pip uninstall buildbot .. and buildbot-worker
